@@ -24,7 +24,7 @@ public class Decomposition {
 
         while (!nodeList.isEmpty()){
             Integer deleteNode = hypergraph.getMinimumDegreeNode();
-            
+
         }
 
 
