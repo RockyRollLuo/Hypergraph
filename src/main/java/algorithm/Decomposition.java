@@ -1,12 +1,10 @@
 package algorithm;
 
 import model.Hypergraph;
-import model.Result;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Decomposition {
     private static final Logger LOGGER = Logger.getLogger(Decomposition.class);
@@ -69,4 +67,31 @@ public class Decomposition {
         double durationTime = (endTime - startTime) / 1.0E9D;
     }
 
+    /**
+     * getter and setter
+     */
+
+    public Hypergraph getHypergraph() {
+        return hypergraph;
+    }
+
+    public void setHypergraph(Hypergraph hypergraph) {
+        this.hypergraph = hypergraph;
+    }
+
+    public HashMap<ArrayList<Integer>, Integer> getCoreEMap() {
+        return coreEMap;
+    }
+
+    public void setCoreEMap(HashMap<ArrayList<Integer>, Integer> coreEMap) {
+        this.coreEMap = coreEMap;
+    }
+
+    public HashMap<Integer, Integer> getCoreVMap() {
+        return coreVMap;
+    }
+
+    public void setCoreVMap(HashMap<Integer, Integer> coreVMap) {
+        this.coreVMap = coreVMap;
+    }
 }

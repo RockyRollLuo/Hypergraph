@@ -26,10 +26,10 @@ public class Test {
         edgeList.remove(list3);
 
         //这种方式能删除成功
-        ArrayList<Integer> list4 = new ArrayList<>();
-        list3.add(4);
-        list3.add(5);
-        edgeList.remove(list4);
+//        ArrayList<Integer> list4 = new ArrayList<>();
+//        list4.add(4);
+//        list4.add(5);
+//        edgeList.remove(list4);
 
         //要想删除list中的list,就必须将每个edge中的node节点排序
 
