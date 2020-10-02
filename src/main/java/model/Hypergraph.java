@@ -1,6 +1,5 @@
 package model;
 
-import algorithm.Decomposition;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -18,16 +17,17 @@ public class Hypergraph {
     public Hypergraph(ArrayList<Integer> nodeList, ArrayList<ArrayList<Integer>> edgeList) {
         this.nodeList = nodeList;
         this.edgeList = edgeList;
+        constructNodeToEdgesMap();
     }
 
     /**
      * construct nodeToEdgesMap
      */
-    public void constructNodeToEdgesMap() {
-        LOGGER.info("Start computee degree...");
+    private void constructNodeToEdgesMap() {
+        LOGGER.info("Start construct nodeToEdgesMap...");
         long startTime = System.nanoTime();
 
-        for (int node : nodeList) {
+        for (Integer node : nodeList) {
             ArrayList<ArrayList<Integer>> edgesContainNode = new ArrayList<>();
 
             for (ArrayList<Integer> edge : edgeList) {
@@ -39,22 +39,42 @@ public class Hypergraph {
         }
 
         long endTime = System.nanoTime();
-        System.out.println((double)(endTime - startTime) / 1.0E9D);
+        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
     }
 
 
     /**
-     * get the node of the minimum degree
-     * @return node
+     * compute degree of each node
+     * @return degreeMap
      */
-    public Integer getMinimumDegreeNode() {
-        int miniDegree = Integer.MAX_VALUE;
-        Integer tempNode = null;
+    public HashMap<Integer,Integer> computeDegree() {
+        LOGGER.info("Start computeDegree...");
+
+        HashMap<Integer, Integer> degreeMap = new HashMap<>();
+        long startTime = System.nanoTime();
 
         for (Integer node : nodeToEdgesMap.keySet()) {
             int degree = nodeToEdgesMap.get(node).size();
-            if (degree < miniDegree) {
-                miniDegree = degree;
+            degreeMap.put(node, degree);
+        }
+
+        long endTime = System.nanoTime();
+        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        return degreeMap;
+    }
+
+    /**
+     * get the node of the minimum degree by degreeMap
+     * @return node ID
+     */
+    public Integer getMinDegreeNode(HashMap<Integer, Integer> degreeMap) {
+        int minDegree = Integer.MAX_VALUE;
+        Integer tempNode = null;
+
+        for (Integer node : degreeMap.keySet()) {
+            int degree = degreeMap.get(node);
+            if (degree < minDegree) {
+                minDegree = degree;
                 tempNode = node;
             }
         }
@@ -64,7 +84,7 @@ public class Hypergraph {
 
     /**
      * delete one node, all the edges contain the node will be deleted
-     * @param node
+     * @param node ID
      */
     public void deleteNode(Integer node) {
         //1.update nodeList
