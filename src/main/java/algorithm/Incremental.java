@@ -61,30 +61,39 @@ public class Incremental {
             coreEMap.put(e0, pre_core_e0);
         }
 
-
         /*
         traversal
          */
         int root_core = pre_core_e0;
-        Stack stack = new Stack();
-
-        for (Integer v : e0) {
-            if (coreVMap.get(v) == root_core) {
-                for (ArrayList<Integer> e : nodeToEdgesMap.get(v)) {
-                    if (coreEMap.get(e) == root_core) {
-                        for (Integer u : e) {
+        HashMap<ArrayList<Integer>, Boolean> visitedEdge = new HashMap<>();
+        HashMap<Integer, Boolean> visitedNode = new HashMap<>();
 
 
+        Stack<ArrayList<Integer>> stack = new Stack<>();
+        stack.push(e0);
+        while (!stack.isEmpty()) {
+            ArrayList<Integer> e_stack = stack.pop();
+            for (Integer v : e_stack) {
+                if (coreVMap.get(v) == root_core) {
+                    for (ArrayList<Integer> e_contain_v : nodeToEdgesMap.get(v)) {
+                        if (coreEMap.get(e_contain_v) == root_core) {
+                            stack.push(e_contain_v); // push stack
+                            for (Integer u : e_contain_v) {
 
+
+
+                            }
                         }
+
                     }
+
 
                 }
 
-
             }
-
         }
+
+
 
 
         long endTime = System.nanoTime();
