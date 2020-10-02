@@ -37,12 +37,10 @@ public class Incremental {
         HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = hypergraph.getNodeToEdgesMap();
 
         /*
-        compute supportMap
-         */
-        HashMap<Integer, Integer> supportMap = hypergraph.computSupport(coreEMap, coreVMap);
-
-        /*
-         compute pre core
+         compute pre core and update graph
+         1.update nodeList
+         2.update edgeList
+         3.update nodeToEdgesMap
          */
         boolean newNodeFlag = false;
         int pre_core_e0 = Integer.MAX_VALUE;
@@ -50,9 +48,22 @@ public class Incremental {
             if (nodeList.contains(v)) {
                 int core_v = coreVMap.get(v);
                 pre_core_e0 = Math.min(core_v, pre_core_e0);
+
+                //3.update nodeToEdgesMap
+                ArrayList<ArrayList<Integer>> edgesContainV = nodeToEdgesMap.get(v);
+                edgesContainV.add(e0);
+                nodeToEdgesMap.put(v, edgesContainV);
+
             } else {
-                coreVMap.put(v, 1);  // the core number of new ndoe is 1
+                coreVMap.put(v, 1);  // the core number of new node is 1
                 newNodeFlag = true;
+
+                nodeList.add(v); //1.update nodeList
+
+                //3.update nodeToEdgesMap
+                ArrayList<ArrayList<Integer>> edgesContainV = new ArrayList<>();
+                edgesContainV.add(e0);
+                nodeToEdgesMap.put(v, edgesContainV);
             }
         }
         if (newNodeFlag) {
@@ -60,29 +71,45 @@ public class Incremental {
         } else {
             coreEMap.put(e0, pre_core_e0);
         }
+        edgeList.add(e0); //2.update edgeList
+
+
+        /*
+        compute supportMap after the insertion
+         */
+        //TODO:not all vertices,just vertex that core number eqauls to pre_core_e0
+        HashMap<Integer, Integer> supportMap = hypergraph.computSupport(nodeToEdgesMap,coreEMap,coreVMap);
+
 
         /*
         traversal
          */
-        int root_core = pre_core_e0;
         HashMap<ArrayList<Integer>, Boolean> visitedEdge = new HashMap<>();
+        for (ArrayList<Integer> edge : edgeList) {
+            visitedEdge.put(edge, false);
+        }
         HashMap<Integer, Boolean> visitedNode = new HashMap<>();
+        for (Integer node : nodeList) {
+            visitedNode.put(node, false);
+        }
 
-
+        int root_core = pre_core_e0;
         Stack<ArrayList<Integer>> stack = new Stack<>();
         stack.push(e0);
+        visitedEdge.put(e0, true);
+
         while (!stack.isEmpty()) {
             ArrayList<Integer> e_stack = stack.pop();
             for (Integer v : e_stack) {
                 if (coreVMap.get(v) == root_core) {
+                    //judge the
+
+
+
                     for (ArrayList<Integer> e_contain_v : nodeToEdgesMap.get(v)) {
-                        if (coreEMap.get(e_contain_v) == root_core) {
-                            stack.push(e_contain_v); // push stack
-                            for (Integer u : e_contain_v) {
-
-
-
-                            }
+                        if (coreEMap.get(e_contain_v) == root_core && !visitedEdge.get(e_contain_v)) {
+                            stack.push(e_contain_v);
+                            visitedEdge.put(e_contain_v, true);
                         }
 
                     }
