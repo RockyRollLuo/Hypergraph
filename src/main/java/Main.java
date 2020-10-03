@@ -1,13 +1,11 @@
 import org.apache.log4j.Logger;
-import util.*;
+import util.SetOpt;
 import util.SetOpt.Option;
 
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.LinkedList;
 
 public class Main {
-    private static Logger LOGGER = Logger.getLogger(Main.class);
+    private static final Logger LOGGER = Logger.getLogger(Main.class);
     @Option(abbr = 'p', usage = "Print trussMap")
     public static int print = 1;
 

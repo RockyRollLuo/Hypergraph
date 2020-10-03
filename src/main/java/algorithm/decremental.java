@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class Incremental {
-    private static final Logger LOGGER = Logger.getLogger(Incremental.class);
+public class decremental {
+    private static final Logger LOGGER = Logger.getLogger(decremental.class);
 
     private Hypergraph hypergraph;
     private HashMap<ArrayList<Integer>, Integer> coreEMap;
@@ -18,7 +18,7 @@ public class Incremental {
     /**
      * constructor
      */
-    public Incremental(Hypergraph hypergraph, HashMap<ArrayList<Integer>, Integer> coreEMap, HashMap<Integer, Integer> coreVMap, ArrayList<Integer> e0) {
+    public decremental(Hypergraph hypergraph, HashMap<ArrayList<Integer>, Integer> coreEMap, HashMap<Integer, Integer> coreVMap, ArrayList<Integer> e0) {
         this.hypergraph = hypergraph;
         this.coreEMap = coreEMap;
         this.coreVMap = coreVMap;

@@ -64,7 +64,7 @@ public class Decomposition {
         }
 
         long endTime = System.nanoTime();
-        double durationTime = (endTime - startTime) / 1.0E9D;
+        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
     }
 
     /**

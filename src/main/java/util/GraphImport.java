@@ -17,9 +17,8 @@ public class GraphImport {
 
     /**
      * load an input graph in memory
-     *
      * @param datasetName dataset name
-     * @param delim       seperate sybolm
+     * @param delim seperate sybolm
      * @return a graph
      * @throws IOException
      */

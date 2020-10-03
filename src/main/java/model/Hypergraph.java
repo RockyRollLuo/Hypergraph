@@ -111,46 +111,6 @@ public class Hypergraph {
     }
 
     /**
-     * compute the support value of each node
-     * @param coreEMap core number of edge
-     * @param coreVMap core number of node
-     * @param e0 dynamic edge
-     * @param core_e0 pre core of dynamic edge
-     * @return supportMap
-     */
-    public HashMap<Integer,Integer> computSupport(HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap,HashMap<ArrayList<Integer>, Integer> coreEMap,HashMap<Integer, Integer> coreVMap,ArrayList<Integer> e0,int core_e0) {
-        LOGGER.info("Start computeSupport...");
-
-        HashMap<Integer, Integer> supportMap = new HashMap<>();
-        long startTime = System.nanoTime();
-
-        //stack
-
-        //TODO:FINDSUBCORE(G(V,E),K(),u)
-        for (Integer v : e0) {
-            int core_v = coreVMap.get(v);
-            if (core_v == core_e0) {
-                int support = 0;
-                for (ArrayList<Integer> e : nodeToEdgesMap.get(v)) {
-                    int core_e = coreEMap.get(e);
-                    if (core_e >= core_v) {
-                        support++;
-                    }
-                }
-                supportMap.put(v, support);
-            }
-
-
-        }
-
-        long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
-        return supportMap;
-    }
-
-
-
-    /**
      * delete one node, all the edges contain the node will be deleted
      * @param node ID
      */
