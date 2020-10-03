@@ -1,6 +1,7 @@
 package algorithm;
 
 import model.Hypergraph;
+import model.Result;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Decomposition {
         this.hypergraph = hypergraph;
     }
 
-    public void run() {
+    public Result run() {
         LOGGER.info("Start decomposition...");
         long startTime = System.nanoTime();
 
@@ -64,8 +65,12 @@ public class Decomposition {
         }
 
         long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        double takenTime= (endTime - startTime) / 1.0E9D;
+        LOGGER.info(takenTime);
+
+        return new Result(coreVMap,takenTime,"Decomposition");
     }
+
 
     /**
      * getter and setter

@@ -1,7 +1,10 @@
+import util.ToolUtils;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Test {
-    public static void main(String[] args) {
+    public static void fun1() {
         ArrayList<ArrayList<Integer>> edgeList = new ArrayList<>();
 
         ArrayList<Integer> list1 = new ArrayList<>();
@@ -35,6 +38,29 @@ public class Test {
 
         System.out.println("===2===");
         System.out.println(edgeList.toString());
+    }
+
+    public static void fun2() {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        map.put(2, 1);
+        map.put(1, 2);
+        map.put(5, 3);
+        map.put(7, 4);
+        map.put(3, 5);
+
+        System.out.println("===unsorted===");
+        System.out.println(map.toString());
+
+        map = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(map, 1);
+        System.out.println("===sorted===");
+        System.out.println(map.toString());
+    }
+
+    public static void main(String[] args) {
+        //fun1();
+
+        fun2();
 
     }
 

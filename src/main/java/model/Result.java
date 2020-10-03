@@ -1,58 +1,35 @@
 package model;
 
-import java.util.LinkedList;
-
 public class Result {
     private Object output;
-    private long takenTime;
-    private int times;  //tds iteration times
+    private double takenTime;
     private String algorithmName;
     private String datasetName;
-    private int order;
-    private int threadNums;
-    private LinkedList<Integer> tdsSizeList;
+    private String type;
 
+    public Result(Object output, double takenTime, String algorithmName) {
+        this.output = output;
+        this.takenTime = takenTime;
+        this.algorithmName = algorithmName;
+    }
 
     /**
      * constructor
      */
 
-    public Result(Object output, long takenTime) {
-        this.output = output;
-        this.takenTime = takenTime;
-        this.times = 1;
-    }
 
-    public Result(Object output, long takenTime, String algorithmName) {
-        this.output = output;
-        this.takenTime = takenTime;
-        this.algorithmName = algorithmName;
-        this.times = 1;
-    }
 
-    public Result(Object output, long takenTime, String algorithmName, String datasetName) {
+    public Result(Object output, double takenTime, String algorithmName, String datasetName, String type) {
         this.output = output;
         this.takenTime = takenTime;
         this.algorithmName = algorithmName;
         this.datasetName = datasetName;
-        this.times = 1;
+        this.type = type;
     }
-
-
-
 
     /**
      * Getter() and Setter()
      */
-
-    public int getTimes() {
-        return times;
-    }
-
-    public void setTimes(int times) {
-        this.times = times;
-    }
-
     public Object getOutput() {
         return output;
     }
@@ -61,7 +38,7 @@ public class Result {
         this.output = output;
     }
 
-    public long getTakenTime() {
+    public double getTakenTime() {
         return takenTime;
     }
 
@@ -85,27 +62,11 @@ public class Result {
         this.datasetName = datasetName;
     }
 
-    public int getOrder() {
-        return order;
+    public String getType() {
+        return type;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public int getThreadNums() {
-        return threadNums;
-    }
-
-    public void setThreadNums(int threadNums) {
-        this.threadNums = threadNums;
-    }
-
-    public LinkedList<Integer> getTdsSizeList() {
-        return tdsSizeList;
-    }
-
-    public void setTdsSizeList(LinkedList<Integer> tdsSizeList) {
-        this.tdsSizeList = tdsSizeList;
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -13,9 +13,6 @@ public class SetOpt {
     private SetOpt() {
     }
 
-    /**
-     *
-     */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     public @interface Option {
@@ -53,15 +50,16 @@ public class SetOpt {
         Field res = null;
         ArrayList<String> list = new ArrayList<>();
         if ("help".startsWith(name)) list.add("help");
-        for (Field f : obj.getClass().getFields()) if (f.isAnnotationPresent(Option.class)) {
-            String id = getName(f);
-            if (id.equals(name)) {
-                return f;
-            } else if (id.startsWith(name)) {
-                list.add(id);
-                res = f;
+        for (Field f : obj.getClass().getFields())
+            if (f.isAnnotationPresent(Option.class)) {
+                String id = getName(f);
+                if (id.equals(name)) {
+                    return f;
+                } else if (id.startsWith(name)) {
+                    list.add(id);
+                    res = f;
+                }
             }
-        }
         if (res == null) {
             if (list.size() > 0) return null;
             System.err.printf("No such option: '--%s'%n", name);
@@ -79,19 +77,19 @@ public class SetOpt {
     }
 
     private static Field getAbbrField(Object obj, char abbr) {
-        for (Field f : obj.getClass().getDeclaredFields()) if (f.isAnnotationPresent(Option.class)) {
-            Option opt = f.getAnnotation(Option.class);
-            if (opt.abbr() == abbr) {
-                return f;
+        for (Field f : obj.getClass().getDeclaredFields())
+            if (f.isAnnotationPresent(Option.class)) {
+                Option opt = f.getAnnotation(Option.class);
+                if (opt.abbr() == abbr) {
+                    return f;
+                }
             }
-        }
         System.err.printf("No such option: '-%c'%n" + abbr);
         System.exit(1);
         return null;
     }
 
-
-    public static String[] setOpt(Object obj, String...args) {
+    public static String[] setOpt(Object obj, String... args) {
         Set<Field> used = new HashSet<>();
         ArrayList<String> ret = new ArrayList<>();
         try {
@@ -121,7 +119,7 @@ public class SetOpt {
                             System.err.printf("The option '--%s' cannot not take arguments%n", name);
                             System.exit(1);
                         }
-                        f.set(obj, !(boolean)f.get(obj));
+                        f.set(obj, !(boolean) f.get(obj));
                     } else {
                         if (val == null) {
                             if (i + 1 >= args.length) {
@@ -150,7 +148,7 @@ public class SetOpt {
                             System.err.printf("The option '-%c' cannot not take arguments%n", abbr);
                             System.exit(1);
                         }
-                        f.set(obj, !(boolean)f.get(obj));
+                        f.set(obj, !(boolean) f.get(obj));
                     } else {
                         if (val.isEmpty()) {
                             if (i + 1 >= args.length) {
@@ -175,30 +173,29 @@ public class SetOpt {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        for (Field f : obj.getClass().getFields()) if (f.isAnnotationPresent(Option.class)) {
-            Option opt = f.getAnnotation(Option.class);
-            if (opt.required() && !used.contains(f)) {
-                System.err.printf("The required option '--%s' is not specified.%n", getName(f));
-                System.exit(1);
+        for (Field f : obj.getClass().getFields())
+            if (f.isAnnotationPresent(Option.class)) {
+                Option opt = f.getAnnotation(Option.class);
+                if (opt.required() && !used.contains(f)) {
+                    System.err.printf("The required option '--%s' is not specified.%n", getName(f));
+                    System.exit(1);
+                }
             }
-        }
         return ret.toArray(new String[0]);
     }
 
-    /**
-     * Option
-     */
     public static void showUsage(Object obj) {
         try {
             System.err.println("Options:");
-            for (Field f : obj.getClass().getFields()) if (f.isAnnotationPresent(Option.class)) {
-                Option opt = f.getAnnotation(Option.class);
-                System.err.print("  ");
-                if (opt.abbr() != 0) System.err.printf("-%c, ", opt.abbr());
-                else System.err.print("    ");
-                System.err.printf("--%s <%s>(%s)", getName(f), f.getType().getSimpleName(), opt.required() ? "required" : f.get(obj));
-                System.err.println("\t" + opt.usage());
-            }
+            for (Field f : obj.getClass().getFields())
+                if (f.isAnnotationPresent(Option.class)) {
+                    Option opt = f.getAnnotation(Option.class);
+                    System.err.print("  ");
+                    if (opt.abbr() != 0) System.err.printf("-%c, ", opt.abbr());
+                    else System.err.print("    ");
+                    System.err.printf("--%s <%s>(%s)", getName(f), f.getType().getSimpleName(), opt.required() ? "required" : f.get(obj));
+                    System.err.println("\t" + opt.usage());
+                }
             System.err.println("      --help\tShow this usage");
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

@@ -13,7 +13,7 @@ public class Hypergraph {
 
     private HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap;
 
-    //constructor
+    //constructorr
     public Hypergraph(ArrayList<Integer> nodeList, ArrayList<ArrayList<Integer>> edgeList) {
         this.nodeList = nodeList;
         this.edgeList = edgeList;
@@ -27,6 +27,7 @@ public class Hypergraph {
         LOGGER.info("Start construct nodeToEdgesMap...");
         long startTime = System.nanoTime();
 
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = new HashMap<>();
         for (Integer node : nodeList) {
             ArrayList<ArrayList<Integer>> edgesContainNode = new ArrayList<>();
 
@@ -38,8 +39,9 @@ public class Hypergraph {
             nodeToEdgesMap.put(node, edgesContainNode);
         }
 
+        this.nodeToEdgesMap = nodeToEdgesMap;
         long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        LOGGER.info("TakenTime:"+(double)(endTime - startTime) / 1.0E9D);
     }
 
     /**
@@ -58,7 +60,7 @@ public class Hypergraph {
         }
 
         long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        LOGGER.info("TakenTime:"+(double) (endTime - startTime) / 1.0E9D);
         return degreeMap;
     }
 

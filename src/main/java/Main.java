@@ -1,43 +1,62 @@
+import model.Hypergraph;
 import org.apache.log4j.Logger;
+import util.FileIOUtils;
 import util.SetOpt;
 import util.SetOpt.Option;
+import util.ToolUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class);
-    @Option(abbr = 'p', usage = "Print trussMap")
-    public static int print = 1;
 
     @Option(abbr = 's', usage = "Separate delimiter,0:tab,1:space,2:comma")
-    public static String delim = "\t";
+    public static int delimType = 1;
 
-    @Option(abbr = 'd', usage = "dynamic type, 0:static TrussDecomp, 1:MultiEdgesInsertion, 2:MultiEdgesDeletion, 3:SupTrussnessParallel")
-    public static int dynamicType = 0;
-
-    @Option(abbr = 'a', usage = "algorithm type, 0:TCPIndex, 1:SupTruss, 2:ParaTruss")
+    @Option(abbr = 'a', usage = "algorithm type, 0:decomposition, 1:incremental, 2:decremental")
     public static int algorithmType = 0;
 
-    @Option(abbr = 'o', usage = "orders of magnitude,number=2^o,o=0,1,2,3,4,5,6")
-    public static int order = 6;
-
-    @Option(abbr = 't', usage = "max thread number")
-    public static int threadNum = 1;
+    @Option(abbr = 'd', usage = "degree distributed, avg,low,high")
+    public static String degreeDistribution = "avg";
 
 
     public static void main(String[] args) throws IOException {
-        //read parameters
+        /*
+        read parameters
+         */
         Main main = new Main();
         args = SetOpt.setOpt(main, args);
+        LOGGER.info("Run information:");
+        System.out.println("algorithm type:" + algorithmType);
+        System.out.println("degree distribution :" + degreeDistribution);
 
-        LOGGER.info("Basic information:");
-        System.err.println("Dynamic edges:" + (int) Math.pow(10, order));
-        System.err.println("Dynamic type:" + dynamicType);
-        System.err.println("Algorithm type:" + algorithmType);
-        System.err.println("Thread number:" + threadNum);
-
-        //full graph
+        /*
+        graph information
+         */
         String datasetName = args[0];
+        Hypergraph hypergraph = FileIOUtils.loadGraph(datasetName, ToolUtils.getDelim(delimType));
+        ArrayList<Integer> nodeList = hypergraph.getNodeList();
+        ArrayList<ArrayList<Integer>> edgeList = hypergraph.getEdgeList();
+        System.out.println("dataset:" + datasetName);
+        System.out.println("node size:" + nodeList.size());
+        System.out.println("edge size:" + edgeList.size());
+
+        /*
+        degree distribution
+         */
+        HashMap<Integer, Integer> degreeMap = hypergraph.computeDegree();
+        HashMap<Integer, Integer> degreeDistribution = ToolUtils.getDegreeDistribution(degreeMap);
+        System.out.println(degreeDistribution.toString());
+
+        /*
+        choose dynamic edge
+         */
+//        degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 1); //sorted nodes by degree
+//        System.out.println(degreeMap.toString());
+
+
 
     }
 }

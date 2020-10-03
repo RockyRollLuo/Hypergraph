@@ -1,7 +1,9 @@
 package algorithm;
 
 import model.Hypergraph;
+import model.Result;
 import org.apache.log4j.Logger;
+import util.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ public class Incremental {
         this.e0 = e0;
     }
 
-    public void run() {
+    public Result run() {
         LOGGER.info("Start incremental...");
         long startTime = System.nanoTime();
 
@@ -123,6 +125,7 @@ public class Incremental {
             visitedNode.put(node, false);
         }
         ArrayList<Integer> deleteNodes = new ArrayList<>();
+        supportMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(supportMap, 1); //sorted by value
         for (Integer v : supportMap.keySet()) {
             visitedNode.put(v, true);
             if (supportMap.get(v) <= core_root) {
@@ -161,7 +164,10 @@ public class Incremental {
         }
 
         long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        double takenTime = (endTime - startTime) / 1.0E9D;
+        LOGGER.info(takenTime);
+
+        return new Result(coreVMap, takenTime, "Incremental");
     }
 
     /**
