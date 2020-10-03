@@ -167,7 +167,7 @@ public class Incremental {
         double takenTime = (endTime - startTime) / 1.0E9D;
         LOGGER.info(takenTime);
 
-        return new Result(coreVMap, takenTime, "Incremental");
+        return new Result(coreVMap, takenTime, "Incremental","full");
     }
 
     /**

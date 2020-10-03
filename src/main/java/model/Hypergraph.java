@@ -148,6 +148,26 @@ public class Hypergraph {
     }
 
 
+    /**
+     * compute coreEMap by coreVMap
+     * @param edgeList edge list
+     * @param coreVMap core of nodes
+     * @return coreEMap
+     */
+    public HashMap<ArrayList<Integer>, Integer> computeCoreEMapByCoreVMap(ArrayList<ArrayList<Integer>> edgeList,HashMap<Integer,Integer> coreVMap) {
+        HashMap<ArrayList<Integer>, Integer> coreEMap = new HashMap<>();
+
+        for (ArrayList<Integer> e : edgeList) {
+            int core_e = Integer.MAX_VALUE;
+            for (Integer v : e) {
+                core_e = Math.min(coreVMap.get(v), core_e);
+            }
+            coreEMap.put(e, core_e);
+        }
+        return coreEMap;
+
+    }
+
 
     //getter and setter
     public ArrayList<Integer> getNodeList() {

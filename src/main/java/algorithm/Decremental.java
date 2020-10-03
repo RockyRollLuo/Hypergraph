@@ -142,7 +142,7 @@ public class Decremental {
         double takenTime = (endTime - startTime) / 1.0E9D;
         LOGGER.info(takenTime);
 
-        return new Result(coreVMap, takenTime, "Decremental");
+        return new Result(coreVMap, takenTime, "Decremental","rest");
     }
 
     /**

@@ -128,6 +128,7 @@ public class FileIOUtils {
         double takenTime = result.getTakenTime();
         String algorithmName = result.getAlgorithmName();
         String datasetName = result.getDatasetName();
+        String type = result.getType();
 
         //Operate System
         String pathSeparator = "\\";
@@ -135,7 +136,7 @@ public class FileIOUtils {
         if (!os.toLowerCase().startsWith("win")) {
             pathSeparator = "/";
         }
-        String fileName = "corenumber" + pathSeparator + algorithmName + "_" + datasetName;
+        String fileName = "corenumber" + pathSeparator + algorithmName + "_" + datasetName + "_" + type;
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
 

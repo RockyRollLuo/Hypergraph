@@ -86,6 +86,47 @@ public class ToolUtils {
         return delim;
     }
 
+    public static String getAlgorithmType(int algorithmType) {
+        String algorithm="decomposition";
+        switch (algorithmType) {
+            case 0:
+                algorithm="decomposition";
+                break;
+            case 1:
+                algorithm="incremental";
+                break;
+            case 2:
+                algorithm = "decremental";
+                break;
+            case 3:
+                algorithm = "degreeDistribution";
+                break;
+            default:
+                break;
+        }
+        return algorithm;
+    }
+
+    public static String getDegreePosition(int degreePosition) {
+        String degreePos="high";
+        switch (degreePosition) {
+            case 0:
+                degreePos="low";
+                break;
+            case 1:
+                degreePos="avg";
+                break;
+            case 2:
+                degreePos = "high";
+                break;
+            default:
+                break;
+        }
+        return degreePos;
+    }
+
+
+
     public static HashMap<Integer, Integer> getDegreeDistribution(HashMap<Integer, Integer> degreeMap) {
         HashMap<Integer, Integer> degreeNums = new HashMap<>();
         for (int value : degreeMap.values()) {
@@ -94,6 +135,31 @@ public class ToolUtils {
         }
         return degreeNums;
     }
+
+
+    /**
+     * get the node index position probability
+     * @param degreePosition
+     * @return
+     */
+    public static double getNodeIndexPro(int degreePosition) {
+        double pro= 0.2;
+        switch (degreePosition) {
+            case 0:
+                pro = 0.5;
+                break;
+            case 1:
+                pro = 0.8;
+                break;
+            case 2:
+                pro = 0.2;
+                break;
+            default:
+                break;
+        }
+        return pro;
+    }
+
 
 
 }

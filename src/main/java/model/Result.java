@@ -7,17 +7,23 @@ public class Result {
     private String datasetName;
     private String type;
 
+
+
+    /**
+     * constructor
+     */
     public Result(Object output, double takenTime, String algorithmName) {
         this.output = output;
         this.takenTime = takenTime;
         this.algorithmName = algorithmName;
     }
 
-    /**
-     * constructor
-     */
-
-
+    public Result(Object output, double takenTime, String algorithmName, String type) {
+        this.output = output;
+        this.takenTime = takenTime;
+        this.algorithmName = algorithmName;
+        this.type = type;
+    }
 
     public Result(Object output, double takenTime, String algorithmName, String datasetName, String type) {
         this.output = output;
