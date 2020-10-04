@@ -27,6 +27,10 @@ public class Decomposition {
         ArrayList<ArrayList<Integer>> edgeList = hypergraph.getEdgeList();
         HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = hypergraph.getNodeToEdgesMap();
 
+        //temp data
+        HashMap<ArrayList<Integer>, Integer> tempCoreEMap = new HashMap<>();
+        HashMap<Integer, Integer> tempCoreVMap = new HashMap<>();
+
         //compute degreeMap
         HashMap<Integer, Integer> degreeMap = hypergraph.computeDegree();
 
@@ -51,18 +55,20 @@ public class Decomposition {
                             }
                         }
                         edgeList.remove(edge);
-                        coreEMap.put(edge, k);
+                        tempCoreEMap.put(edge, k); //core number of edge
                     }
                     nodeList.remove(v);
-                    coreVMap.put(v, k);
+                    tempCoreVMap.put(v, k); //core number of node
                 }
             }
             for (Integer v : deleteNodes) {
                 degreeMap.remove(v);
-
             }
             k++;
         }
+
+        this.coreVMap = tempCoreVMap;
+        this.coreEMap = tempCoreEMap;
 
         long endTime = System.nanoTime();
         double takenTime= (endTime - startTime) / 1.0E9D;

@@ -10,6 +10,8 @@ import util.SetOpt.Option;
 import util.ToolUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,24 +52,32 @@ public class MainSingleAlgorithm {
 
 
         /*
-        choose dynamic edge
+        single algorithm
          */
+
         HashMap<Integer, Integer> degreeMap = hypergraph.computeDegree();
-        degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 0); //sorted nodes by degree descending
-        int index = (int) (nodeList.size() * ToolUtils.getNodeIndexPro(degreePosition));
-        Integer node = ((ArrayList<Integer>) degreeMap.keySet()).get(index);
-        ArrayList<Integer> e0 = ToolUtils.getRandomElement(nodeToEdgesMap.get(node));
 
+        /*
+        0.decomposition
+         */
+        if (algorithmType == 0) {
+            Decomposition decomposition = new Decomposition(hypergraph);
+            Result result_decomposition = decomposition.run();
+            result_decomposition.setDatasetName(datasetName);
+            result_decomposition.setType("full");
+            FileIOUtils.writeCoreNumber(result_decomposition);
+            //TODO:write result
+        }else if (algorithmType == 1 || algorithmType == 2) {
+            degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 0); //sorted nodes by degree descending
+            int index = (int) (nodeList.size() * ToolUtils.getNodeIndexPro(degreePosition));
+            Integer node = (new ArrayList<Integer> (degreeMap.keySet())).get(index);
+            ArrayList<Integer> e0 = ToolUtils.getRandomElement(nodeToEdgesMap.get(node));
+            LOGGER.info("dynamic edge e0:"+e0.toString());
 
-        switch (algorithmType) {
-            case 0:
-                Decomposition decomposition = new Decomposition(hypergraph);
-                Result result_decomposition = decomposition.run();
-                result_decomposition.setDatasetName(datasetName);
-                result_decomposition.setType("full");
-                //TODO:write result
-                break;
-            case 1:
+            /*
+            1.incremental
+             */
+            if (algorithmType == 1) {
                 //1.construct graph
                 hypergraph.deleteEdge(e0);
                 //2.decomposition rest
@@ -78,8 +88,11 @@ public class MainSingleAlgorithm {
                 Result result_incremental = incremental.run();
                 result_incremental.setDatasetName(datasetName);
                 //TODO:write result
-                break;
-            case 2:
+
+            /*
+            2.decremental
+             */
+            } else if (algorithmType == 2) {
                 //1.decomposition
                 Decomposition decomposition_full = new Decomposition(hypergraph);
                 decomposition_full.run();
@@ -88,14 +101,28 @@ public class MainSingleAlgorithm {
                 Result result_dremental = decremental.run();
                 result_dremental.setDatasetName(datasetName);
                 //TODO:write result
-                break;
-            case 3:
-                HashMap<Integer, Integer> degreeDistribution = ToolUtils.getDegreeDistribution(degreeMap);
-                System.out.println(degreeDistribution.toString());
-                break;
-            default:
-                break;
+            }
 
+            /*
+            3.degree distribution
+             */
+        } else if (algorithmType == 3) {
+            HashMap<Integer, Integer> degreeDistribution = ToolUtils.getDegreeDistribution(degreeMap);
+
+            ArrayList<Integer> values = new ArrayList<>(degreeDistribution.values());
+            System.out.println(values.toString());
+            System.out.println();
+
+            ArrayList<Double> valuesPrecent = new ArrayList<>();
+            int nodeListSize = nodeList.size();
+            for (int num : values) {
+                double precent=num*1.0/nodeListSize;
+                if (precent > 0.001) {
+                    double precent2 = (new BigDecimal(precent).setScale(3, RoundingMode.FLOOR)).doubleValue();
+                    valuesPrecent.add(precent2);
+                }
+            }
+            System.out.println(valuesPrecent.toString());
         }
 
     }

@@ -1,7 +1,9 @@
 package model;
 
+import java.util.HashMap;
+
 public class Result {
-    private Object output;
+    private HashMap<Integer,Integer> output;
     private double takenTime;
     private String algorithmName;
     private String datasetName;
@@ -12,20 +14,20 @@ public class Result {
     /**
      * constructor
      */
-    public Result(Object output, double takenTime, String algorithmName) {
+    public Result(HashMap<Integer,Integer> output, double takenTime, String algorithmName) {
         this.output = output;
         this.takenTime = takenTime;
         this.algorithmName = algorithmName;
     }
 
-    public Result(Object output, double takenTime, String algorithmName, String type) {
+    public Result(HashMap<Integer,Integer> output, double takenTime, String algorithmName, String type) {
         this.output = output;
         this.takenTime = takenTime;
         this.algorithmName = algorithmName;
         this.type = type;
     }
 
-    public Result(Object output, double takenTime, String algorithmName, String datasetName, String type) {
+    public Result(HashMap<Integer,Integer> output, double takenTime, String algorithmName, String datasetName, String type) {
         this.output = output;
         this.takenTime = takenTime;
         this.algorithmName = algorithmName;
@@ -36,11 +38,11 @@ public class Result {
     /**
      * Getter() and Setter()
      */
-    public Object getOutput() {
+    public HashMap<Integer,Integer> getOutput() {
         return output;
     }
 
-    public void setOutput(Object output) {
+    public void setOutput(HashMap<Integer,Integer> output) {
         this.output = output;
     }
 

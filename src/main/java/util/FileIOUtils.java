@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 
 public class FileIOUtils {
 
@@ -49,8 +48,10 @@ public class FileIOUtils {
             }
 
             String[] tokens = line.split(delim);
+//            if (tokens.length == 1) {
+//                continue;
+//            }
             ArrayList<Integer> newEdge = new ArrayList<>();
-
             for (String token : tokens) {
                 int node = Integer.parseInt(token);
                 newEdge.add(node);
@@ -65,7 +66,7 @@ public class FileIOUtils {
         ArrayList<Integer> nodeList = new ArrayList<>(nodeSet);
 
         long endTime = System.nanoTime();
-        LOGGER.info("TakenTime:"+(double) (endTime - startTime) / 1.0E9D);
+        LOGGER.info("TakenTime:" + (double) (endTime - startTime) / 1.0E9D);
 
         return new Hypergraph(nodeList, edgeList);
     }
@@ -124,7 +125,7 @@ public class FileIOUtils {
         long startTime = System.nanoTime();
         LOGGER.info("Start writing file... ");
 
-        Hashtable<Object, Integer> output = (Hashtable<Object, Integer>) result.getOutput();
+        HashMap<Integer, Integer> output = result.getOutput();
         double takenTime = result.getTakenTime();
         String algorithmName = result.getAlgorithmName();
         String datasetName = result.getDatasetName();
