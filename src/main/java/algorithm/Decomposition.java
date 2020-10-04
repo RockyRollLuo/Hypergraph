@@ -3,6 +3,7 @@ package algorithm;
 import model.Hypergraph;
 import model.Result;
 import org.apache.log4j.Logger;
+import util.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,44 +38,55 @@ public class Decomposition {
         Integer minDegreeNode = hypergraph.getMinDegreeNode(degreeMap);
         int minDegree = degreeMap.get(minDegreeNode);
 
-        int k = minDegree;
-        while (!nodeList.isEmpty()) {
+        for (int k = minDegree; ; k++) {
+            if (degreeMap.size() == 0) {
+                break;
+            }
 
             ArrayList<Integer> deleteNodes = new ArrayList<>();
+
             for (Integer v : degreeMap.keySet()) {
                 if (degreeMap.get(v) <= k) {
+                    deleteNodes.add(v);
+                }
+            }
+
+            while (!deleteNodes.isEmpty()) {
+                ArrayList<Integer> newDeleteNodes = new ArrayList<>();
+
+                for (Integer v : deleteNodes) {
+
                     ArrayList<ArrayList<Integer>> edgesContainDeleteNode = nodeToEdgesMap.get(v);
                     for (ArrayList<Integer> edge : edgesContainDeleteNode) {
                         for (Integer u : edge) {
+                            if (!degreeMap.containsKey(u)) {
+                                continue;
+                            }
                             int uDegree = degreeMap.get(u) - 1;
-                            if (uDegree == 0) {
-                                nodeList.remove(u);
-                                deleteNodes.remove(u);
-                            } else {
-                                degreeMap.put(u, uDegree);
+                            if (uDegree == k) {
+                                newDeleteNodes.add(u);
+
+                                tempCoreEMap.put(edge, k); //core number of edge
                             }
                         }
-                        edgeList.remove(edge);
-                        tempCoreEMap.put(edge, k); //core number of edge
                     }
-                    nodeList.remove(v);
                     tempCoreVMap.put(v, k); //core number of node
+                    //TODO:update graph,not only remove v,but also remove the nodes in edge
+                    degreeMap.remove(v);
                 }
+                deleteNodes = newDeleteNodes;
             }
-            for (Integer v : deleteNodes) {
-                degreeMap.remove(v);
-            }
-            k++;
+
         }
 
         this.coreVMap = tempCoreVMap;
         this.coreEMap = tempCoreEMap;
-
         long endTime = System.nanoTime();
-        double takenTime= (endTime - startTime) / 1.0E9D;
+        double takenTime = (endTime - startTime) / 1.0E9D;
         LOGGER.info(takenTime);
 
-        return new Result(coreVMap,takenTime,"Decomposition");
+        return new Result(coreVMap, takenTime, "Decomposition");
+
     }
 
 

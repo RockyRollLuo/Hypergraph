@@ -1,6 +1,26 @@
-2020-10-04 21:57:11 [Thread:main][ Class:util.DatasetPreprocess >> Method: util.DatasetPreprocess.readIntegerFile(DatasetPreprocess.java:93) ]
-INFO:threads-stack-overflow-nverts.txt READ DONE!: 0.6805951
-2020-10-04 21:57:22 [Thread:main][ Class:util.DatasetPreprocess >> Method: util.DatasetPreprocess.readIntegerFile(DatasetPreprocess.java:93) ]
-INFO:threads-stack-overflow-simplices.txt READ DONE!: 11.0690749
-2020-10-04 21:57:51 [Thread:main][ Class:util.DatasetPreprocess >> Method: util.DatasetPreprocess.writeFile(DatasetPreprocess.java:133) ]
-INFO:threads-stack-overflow WRITE DONE!: 13.8556261
+2020-10-05 00:46:15 [Thread:main][ Class:MainSingleAlgorithm >> Method: MainSingleAlgorithm.main(MainSingleAlgorithm.java:37) ]
+INFO:Run information:
+2020-10-05 00:46:15 [Thread:main][ Class:util.FileIOUtils >> Method: util.FileIOUtils.loadGraph(FileIOUtils.java:34) ]
+INFO:Start loading graph: datasets\DAWN.txt
+2020-10-05 00:46:15 [Thread:main][ Class:util.FileIOUtils >> Method: util.FileIOUtils.loadGraph(FileIOUtils.java:69) ]
+INFO:TakenTime:0.193215612
+2020-10-05 00:46:15 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.constructNodeToEdgesMap(Hypergraph.java:27) ]
+INFO:Start construct nodeToEdgesMap...
+2020-10-05 00:46:27 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.constructNodeToEdgesMap(Hypergraph.java:44) ]
+INFO:TakenTime:12.103435919
+2020-10-05 00:46:27 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.computeDegree(Hypergraph.java:52) ]
+INFO:Start computeDegree...
+2020-10-05 00:46:27 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.computeDegree(Hypergraph.java:63) ]
+INFO:TakenTime:7.21484E-4
+2020-10-05 00:46:27 [Thread:main][ Class:algorithm.Decomposition >> Method: algorithm.Decomposition.run(Decomposition.java:23) ]
+INFO:Start decomposition...
+2020-10-05 00:46:27 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.computeDegree(Hypergraph.java:52) ]
+INFO:Start computeDegree...
+2020-10-05 00:46:27 [Thread:main][ Class:model.Hypergraph >> Method: model.Hypergraph.computeDegree(Hypergraph.java:63) ]
+INFO:TakenTime:7.76662E-4
+2020-10-05 00:46:30 [Thread:main][ Class:algorithm.Decomposition >> Method: algorithm.Decomposition.run(Decomposition.java:84) ]
+INFO:3.103047749
+2020-10-05 00:46:30 [Thread:main][ Class:util.FileIOUtils >> Method: util.FileIOUtils.writeCoreNumber(FileIOUtils.java:126) ]
+INFO:Start writing file... 
+2020-10-05 00:46:30 [Thread:main][ Class:util.FileIOUtils >> Method: util.FileIOUtils.writeCoreNumber(FileIOUtils.java:155) ]
+INFO:0.00359138
