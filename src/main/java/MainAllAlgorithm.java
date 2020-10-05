@@ -48,7 +48,7 @@ public class MainAllAlgorithm {
         /*
         choose dynamic edge
          */
-        HashMap<Integer, Integer> degreeMap = hypergraph.computeDegree();
+        HashMap<Integer, Integer> degreeMap = hypergraph.getDegreeMap();
         degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 0); //sorted nodes by degree descending
         Integer node = ((ArrayList<Integer>) degreeMap.keySet()).get((int) (nodeList.size() * ToolUtils.getNodeIndexPro(degreePosition)));
         ArrayList<Integer> e0 = ToolUtils.getRandomElement(nodeToEdgesMap.get(node));

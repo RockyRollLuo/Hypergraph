@@ -55,7 +55,7 @@ public class MainSingleAlgorithm {
         single algorithm
          */
 
-        HashMap<Integer, Integer> degreeMap = hypergraph.computeDegree();
+        HashMap<Integer, Integer> degreeMap = hypergraph.getDegreeMap();
 
         /*
         0.decomposition
@@ -66,7 +66,7 @@ public class MainSingleAlgorithm {
             result_decomposition.setDatasetName(datasetName);
             result_decomposition.setType("full");
             FileIOUtils.writeCoreNumber(result_decomposition);
-            //TODO:write result
+
         }else if (algorithmType == 1 || algorithmType == 2) {
             degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 0); //sorted nodes by degree descending
             int index = (int) (nodeList.size() * ToolUtils.getNodeIndexPro(degreePosition));
@@ -87,7 +87,7 @@ public class MainSingleAlgorithm {
                 Incremental incremental = new Incremental(hypergraph, decomposition_rest.getCoreEMap(), decomposition_rest.getCoreVMap(), e0);
                 Result result_incremental = incremental.run();
                 result_incremental.setDatasetName(datasetName);
-                //TODO:write result
+                FileIOUtils.writeCoreNumber(result_incremental);
 
             /*
             2.decremental
@@ -100,7 +100,7 @@ public class MainSingleAlgorithm {
                 Decremental decremental = new Decremental(hypergraph, decomposition_full.getCoreEMap(), decomposition_full.getCoreVMap(), e0);
                 Result result_dremental = decremental.run();
                 result_dremental.setDatasetName(datasetName);
-                //TODO:write result
+                FileIOUtils.writeCoreNumber(result_dremental);
             }
 
             /*

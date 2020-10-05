@@ -136,6 +136,21 @@ public class ToolUtils {
         return degreeNums;
     }
 
+    public static ArrayList<Integer> getCoreDistribution(HashMap<Integer, Integer> coreVMap) {
+        HashMap<Integer, Integer> coreNumMap = new HashMap<>();
+        for (int value : coreVMap.values()) {
+            int num=coreNumMap.get(value)==null?1:coreNumMap.get(value)+1;
+            coreNumMap.put(value, num);
+        }
+
+        ArrayList<Integer> coreNumList = new ArrayList<>();
+        int maxCore=Collections.max(coreNumMap.keySet());
+        for (int i = 1; i <= maxCore; i++) {
+            int num = coreNumMap.get(i) == null ? 0 : coreNumMap.get(i);
+            coreNumList.add(num);
+        }
+        return coreNumList;
+    }
 
     /**
      * get the node index position probability
@@ -160,12 +175,6 @@ public class ToolUtils {
         return pro;
     }
 
-
-    public static void getCoreStatisitic(HashMap<Integer, Integer> coreVMap) {
-        //TODO:
-
-
-    }
 
 
 }

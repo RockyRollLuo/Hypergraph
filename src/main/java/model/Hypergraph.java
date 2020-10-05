@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Hypergraph {
     private static final Logger LOGGER = Logger.getLogger(Hypergraph.class);
@@ -41,18 +42,18 @@ public class Hypergraph {
 
         this.nodeToEdgesMap = nodeToEdgesMap;
         long endTime = System.nanoTime();
-        LOGGER.info("TakenTime:"+(double)(endTime - startTime) / 1.0E9D);
+        LOGGER.info("TakenTime:" + (double) (endTime - startTime) / 1.0E9D);
     }
 
     /**
      * compute degree of each node
+     *
      * @return degreeMap
      */
-    public HashMap<Integer,Integer> computeDegree() {
-        LOGGER.info("Start computeDegree...");
+    public HashMap<Integer, Integer> getDegreeMap() {
+        long startTime = System.nanoTime();
 
         HashMap<Integer, Integer> degreeMap = new HashMap<>();
-        long startTime = System.nanoTime();
 
         for (Integer node : nodeToEdgesMap.keySet()) {
             int degree = nodeToEdgesMap.get(node).size();
@@ -60,12 +61,13 @@ public class Hypergraph {
         }
 
         long endTime = System.nanoTime();
-        LOGGER.info("TakenTime:"+(double) (endTime - startTime) / 1.0E9D);
+        LOGGER.info("TakenTime:" + (double) (endTime - startTime) / 1.0E9D);
         return degreeMap;
     }
 
     /**
      * get the node of the minimum degree by degreeMap
+     *
      * @return node ID
      */
     public Integer getMinDegreeNode(HashMap<Integer, Integer> degreeMap) {
@@ -84,12 +86,51 @@ public class Hypergraph {
 
 
     /**
+     * get node neighbors
+     *
+     * @return neighborNodesMap
+     */
+    public HashMap<Integer, ArrayList<Integer>> getNeighborsMap() {
+        long startTime = System.nanoTime();
+        HashMap<Integer, ArrayList<Integer>> neighborsMap = new HashMap<>();
+
+        for (Integer v : nodeToEdgesMap.keySet()) {
+            ArrayList<Integer> tempNeighborList = new ArrayList<>();
+            for (ArrayList<Integer> e : nodeToEdgesMap.get(v)) {
+                tempNeighborList.addAll(e);
+            }
+
+            HashSet<Integer> tempSet = new HashSet<>(tempNeighborList);
+            ArrayList<Integer> neighborList = new ArrayList<>(tempSet);
+            neighborList.remove(v);
+
+            neighborsMap.put(v, neighborList);
+        }
+
+        long endTime = System.nanoTime();
+        LOGGER.info("TakenTime:" + (double) (endTime - startTime) / 1.0E9D);
+        return neighborsMap;
+    }
+
+    public HashMap<Integer, ArrayList<Integer>> deleteNodeFromNeigborsMap(HashMap<Integer, ArrayList<Integer>> neighborsMap, Integer deleteNode) {
+        ArrayList<Integer> neigbors = neighborsMap.get(deleteNode);
+
+        for (Integer v : neigbors) {
+            neighborsMap.get(v).remove(deleteNode);
+        }
+        neighborsMap.remove(deleteNode);
+        return neighborsMap;
+    }
+
+
+    /**
      * compute the support value of each node
+     *
      * @param coreEMap core number of edge
      * @param coreVMap core number of node
      * @return supportMap
      */
-    public HashMap<Integer,Integer> computSupport(HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap,HashMap<ArrayList<Integer>, Integer> coreEMap,HashMap<Integer, Integer> coreVMap) {
+    public HashMap<Integer, Integer> getSupportMap(HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap, HashMap<ArrayList<Integer>, Integer> coreEMap, HashMap<Integer, Integer> coreVMap) {
         LOGGER.info("Start computeSupport...");
 
         HashMap<Integer, Integer> supportMap = new HashMap<>();
@@ -108,12 +149,13 @@ public class Hypergraph {
         }
 
         long endTime = System.nanoTime();
-        LOGGER.info((double)(endTime - startTime) / 1.0E9D);
+        LOGGER.info((double) (endTime - startTime) / 1.0E9D);
         return supportMap;
     }
 
     /**
      * delete one node, all the edges contain the node will be deleted
+     *
      * @param node ID
      */
     public void deleteNode(Integer node) {
@@ -130,6 +172,7 @@ public class Hypergraph {
 
     /**
      * delete one edge,update node in the edge
+     *
      * @param edge hyper edge
      */
     public void deleteEdge(ArrayList<Integer> edge) {
@@ -150,11 +193,12 @@ public class Hypergraph {
 
     /**
      * compute coreEMap by coreVMap
+     *
      * @param edgeList edge list
      * @param coreVMap core of nodes
      * @return coreEMap
      */
-    public HashMap<ArrayList<Integer>, Integer> computeCoreEMapByCoreVMap(ArrayList<ArrayList<Integer>> edgeList,HashMap<Integer,Integer> coreVMap) {
+    public HashMap<ArrayList<Integer>, Integer> computeCoreEMapByCoreVMap(ArrayList<ArrayList<Integer>> edgeList, HashMap<Integer, Integer> coreVMap) {
         HashMap<ArrayList<Integer>, Integer> coreEMap = new HashMap<>();
 
         for (ArrayList<Integer> e : edgeList) {

@@ -57,10 +57,44 @@ public class Test {
         System.out.println(map.toString());
     }
 
-    public static void main(String[] args) {
-        //fun1();
+    public static void fun3() {
+        ArrayList<Integer> list1 = new ArrayList<>();
+        list1.add(new Integer(1));
+        list1.add(new Integer(2));
+        list1.add(new Integer(3));
 
-        fun2();
+//        ArrayList<Integer> nodeList2 = nodeList1;
+//        nodeList2.remove(new Integer(2));
+//        System.out.println(nodeList1.toString());
+
+
+        ArrayList<Integer> list3 = new ArrayList<>(list1);
+        list3.remove(new Integer(2));
+        System.out.println(list1.toString());
+        System.out.println(list3.toString());
+
+        ArrayList<ArrayList<Integer>> lists4 = new ArrayList<>();
+        lists4.add(list1);
+        lists4.add(list3);
+        System.out.println(lists4.toString());
+
+        ArrayList<ArrayList<Integer>> lists5 = new ArrayList<>(lists4);
+        ArrayList<Integer> list6 = new ArrayList<>();
+        list6.add(1);
+        list6.add(3);
+
+        lists5.remove(list6);
+
+        System.out.println("lists4:"+lists4.toString());
+        System.out.println("lists5:"+lists5.toString());
+
+    }
+
+    public static void main(String[] args) {
+//        fun1();
+
+//        fun2();
+        fun3();
 
     }
 

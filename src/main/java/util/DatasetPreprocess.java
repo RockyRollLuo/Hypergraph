@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class DatasetPreprocess {
     private static final Logger LOGGER = Logger.getLogger(DatasetPreprocess.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void hypergraphPreprocess() throws IOException {
 
         String datasetNameList[] = {"test", "congress-bills", "tags-stack-overflow", "coauth-DBLP", "threads-stack-overflow"};
 
@@ -131,5 +131,57 @@ public class DatasetPreprocess {
 
         long endTime = System.nanoTime();
         LOGGER.info(fileName + " WRITE DONE!: " + (double) (endTime - startTime) / 1.0E9D);
+    }
+
+    public static void projectGraphPreprocess() throws IOException {
+
+        String datasetNameList[] = {"test", "tags-math-sx","DAWN","tags-ask-ubuntu","NDC-substances","threads-ask-ubuntu","threads-math-sx","coauth-MAG-History","coauth-MAG-Geology"};
+
+        String dataset = datasetNameList[8];
+
+        /*
+        read file
+         */
+        long startTime1 = System.nanoTime();
+        String path_read = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset+"-proj-graph\\" + dataset + "-proj-graph.txt";
+        ArrayList<ArrayList<Integer>> edgeList = new ArrayList<>();
+        final BufferedReader br = new BufferedReader(new FileReader(path_read));
+        while (true) {
+            final String line = br.readLine();
+            if (line == null) {
+                break;
+            }
+            String token[]=line.split(" ");
+            Integer v = Integer.parseInt(token[0]);
+            Integer u = Integer.parseInt(token[1]);
+            ArrayList<Integer> edge = new ArrayList<>();
+            edge.add(v);
+            edge.add(u);
+            edgeList.add(edge);
+        }
+        long endTime1 = System.nanoTime();
+        LOGGER.info("READ DONE!: " + (double) (endTime1 - startTime1) / 1.0E9D);
+
+        /*
+        write file
+         */
+        long startTime2 = System.nanoTime();
+        String path_write = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset+"-proj-graph\\" + dataset + ".txt";
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path_write));
+        for (ArrayList<Integer> edge : edgeList) {
+            String line = edge.toString().replace("[", "").replace("]", "").replace(",", "");
+            bw.write(line);
+            bw.newLine();
+        }
+        bw.close();
+        long endTime2 = System.nanoTime();
+        LOGGER.info("WRITE DONE!: " + (double) (endTime2 - startTime2) / 1.0E9D);
+    }
+
+    public static void main(String[] args) throws IOException {
+//        hypergraphPreprocess();
+
+        projectGraphPreprocess();
+
     }
 }
