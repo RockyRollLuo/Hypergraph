@@ -14,7 +14,7 @@ public class Hypergraph {
 
     private HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap;
 
-    //constructorr
+    //constructor
     public Hypergraph(ArrayList<Integer> nodeList, ArrayList<ArrayList<Integer>> edgeList) {
         this.nodeList = nodeList;
         this.edgeList = edgeList;

@@ -61,7 +61,7 @@ public class FileIOUtils {
             edgeList.add(newEdge);
         }
 
-        //construct hypergraph
+
         HashSet<Integer> nodeSet = new HashSet<>(tempNodeList);
         ArrayList<Integer> nodeList = new ArrayList<>(nodeSet);
 
@@ -121,7 +121,7 @@ public class FileIOUtils {
      * @param result coreMap
      * @throws IOException
      */
-    public static void writeCoreNumber(Result result) throws IOException {
+    public static void writeCoreNumber(Result result, int printResult) throws IOException {
         long startTime = System.nanoTime();
         LOGGER.info("Start writing file... ");
 
@@ -144,11 +144,13 @@ public class FileIOUtils {
         bw.write("# takenTime:" + takenTime + "us");
         bw.newLine();
 
-        for (Object key : output.keySet()) {
-            bw.write(key.toString() + "\t" + output.get(key));
-            bw.newLine();
+        //whether print the core nubmer
+        if (printResult == 1) {
+            for (Integer key : output.keySet()) {
+                bw.write(key.toString() + "\t" + output.get(key));
+                bw.newLine();
+            }
         }
-
         bw.close();
 
         long endTime = System.nanoTime();

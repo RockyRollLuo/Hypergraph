@@ -27,6 +27,9 @@ public class MainSingleAlgorithm {
     @Option(abbr = 'd', usage = "degree position, 0:low,1:avg,2:high")
     public static int degreePosition = 1;
 
+    @Option(abbr = 'p', usage = "whether print the core number in result")
+    public static int printResult = 1;
+
 
     public static void main(String[] args) throws IOException {
         /*
@@ -65,12 +68,12 @@ public class MainSingleAlgorithm {
             Result result_decomposition = decomposition.run();
             result_decomposition.setDatasetName(datasetName);
             result_decomposition.setType("full");
-            FileIOUtils.writeCoreNumber(result_decomposition);
+            FileIOUtils.writeCoreNumber(result_decomposition,printResult);
 
         }else if (algorithmType == 1 || algorithmType == 2) {
             degreeMap = (HashMap<Integer, Integer>) ToolUtils.sortMapByValue(degreeMap, 0); //sorted nodes by degree descending
-            int index = (int) (nodeList.size() * ToolUtils.getNodeIndexPro(degreePosition));
-            Integer node = (new ArrayList<Integer> (degreeMap.keySet())).get(index);
+            int index = ToolUtils.getNodeIndexRand(degreePosition,nodeList.size());
+            Integer node = (new ArrayList<Integer>(degreeMap.keySet())).get(index);
             ArrayList<Integer> e0 = ToolUtils.getRandomElement(nodeToEdgesMap.get(node));
             LOGGER.info("dynamic edge e0:"+e0.toString());
 
@@ -87,7 +90,7 @@ public class MainSingleAlgorithm {
                 Incremental incremental = new Incremental(hypergraph, decomposition_rest.getCoreEMap(), decomposition_rest.getCoreVMap(), e0);
                 Result result_incremental = incremental.run();
                 result_incremental.setDatasetName(datasetName);
-                FileIOUtils.writeCoreNumber(result_incremental);
+                FileIOUtils.writeCoreNumber(result_incremental,printResult);
 
             /*
             2.decremental
@@ -100,7 +103,7 @@ public class MainSingleAlgorithm {
                 Decremental decremental = new Decremental(hypergraph, decomposition_full.getCoreEMap(), decomposition_full.getCoreVMap(), e0);
                 Result result_dremental = decremental.run();
                 result_dremental.setDatasetName(datasetName);
-                FileIOUtils.writeCoreNumber(result_dremental);
+                FileIOUtils.writeCoreNumber(result_dremental,printResult);
             }
 
             /*

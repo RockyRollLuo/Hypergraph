@@ -178,10 +178,63 @@ public class DatasetPreprocess {
         LOGGER.info("WRITE DONE!: " + (double) (endTime2 - startTime2) / 1.0E9D);
     }
 
+    public static void statisticHypergraph() throws IOException {
+
+        String datasetNameList[] = {"test", "tags-math","DAWN","tags-ask-ubuntu","NDC-substances","threads-ask-ubuntu","threads-math","coauth-History","coauth-Geology"};
+
+//        String datasetAll = datasetNameList[5];
+
+        for(String dataset:datasetNameList) {
+        /*
+        read file
+         */
+            long startTime1 = System.nanoTime();
+            String path_read = "datasets\\" + dataset + ".txt";
+
+            ArrayList<ArrayList<Integer>> edgeList = new ArrayList<>();
+            //read edges
+            final BufferedReader br = new BufferedReader(new FileReader(path_read));
+            while (true) {
+                final String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+                String[] tokens = line.split(" ");
+
+                ArrayList<Integer> newEdge = new ArrayList<>();
+                for (String token : tokens) {
+                    int node = Integer.parseInt(token);
+                    newEdge.add(node);
+                }
+
+                edgeList.add(newEdge);
+            }
+
+            int maxCardinality = 1;
+            int sumCardinality = 0;
+            for (ArrayList<Integer> e : edgeList) {
+                int cardi = e.size();
+
+                maxCardinality = Math.max(maxCardinality, cardi);
+                sumCardinality += cardi;
+            }
+
+            System.out.println("=================" + dataset);
+            System.out.println("maxCardinality:" + maxCardinality);
+            System.out.println("avgCardinality:" + sumCardinality * 1.0 / edgeList.size());
+
+
+            long endTime1 = System.nanoTime();
+            LOGGER.info("WRITE DONE!: " + (double) (endTime1 - startTime1) / 1.0E9D);
+        }
+    }
+
+
     public static void main(String[] args) throws IOException {
 //        hypergraphPreprocess();
 
-        projectGraphPreprocess();
+//        projectGraphPreprocess();
 
+        statisticHypergraph();
     }
 }

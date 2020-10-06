@@ -3,7 +3,6 @@ package algorithm;
 import model.Hypergraph;
 import model.Result;
 import org.apache.log4j.Logger;
-import util.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,10 +19,10 @@ public class Decomposition {
     }
 
 
-
     /**
-     *  travel graph by nodeToEdgesMap
-     *  this method is very slow, due to the comparing edges
+     * travel graph by nodeToEdgesMap
+     * this method is very slow, due to the comparing edges
+     *
      * @return
      */
     public Result run() {
@@ -69,7 +68,7 @@ public class Decomposition {
                     ArrayList<ArrayList<Integer>> deleteEdges = new ArrayList<>();
                     for (ArrayList<Integer> edge : tempNodeToEdgesMap.get(v)) {
                         for (Integer u : edge) {
-                            if(!tempNodeList.contains(u)) continue;
+                            if (!tempNodeList.contains(u)) continue;
 
                             int uDegree = degreeMap.get(u) - 1;
                             degreeMap.put(u, uDegree); //update degreeMap
@@ -109,6 +108,7 @@ public class Decomposition {
     /**
      * create in ordinary graph
      * !!!wrong in hyergraphs!!!
+     *
      * @return
      */
     public Result run1() {
