@@ -30,6 +30,9 @@ public class MainSingleAlgorithm {
     @Option(abbr = 'p', usage = "whether print the core number in result")
     public static int printResult = 1;
 
+    @Option(abbr = 'c', usage = "whether to constructe nodeToEdgesMap, false:no, true:yes")
+    public static boolean constructStructure = true;
+
 
     public static void main(String[] args) throws IOException {
         /*
@@ -45,7 +48,7 @@ public class MainSingleAlgorithm {
         graph information
          */
         String datasetName = args[0];
-        Hypergraph hypergraph = FileIOUtils.loadGraph(datasetName, ToolUtils.getDelim(delimType));
+        Hypergraph hypergraph = FileIOUtils.loadGraph(datasetName, ToolUtils.getDelim(delimType),constructStructure);
         ArrayList<Integer> nodeList = hypergraph.getNodeList();
         ArrayList<ArrayList<Integer>> edgeList = hypergraph.getEdgeList();
         HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = hypergraph.getNodeToEdgesMap();

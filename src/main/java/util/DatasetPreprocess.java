@@ -1,5 +1,6 @@
 package util;
 
+import model.Hypergraph;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -118,7 +119,7 @@ public class DatasetPreprocess {
     public static void writeFile(ArrayList<ArrayList<Integer>> edgeList, String datasetPath, String fileName) throws IOException {
         long startTime = System.nanoTime();
 
-        String path = datasetPath + "\\" + fileName+"-hyperedges" + ".txt";
+        String path = datasetPath + "\\" + fileName + "-hyperedges" + ".txt";
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(path));
         for (ArrayList<Integer> edge : edgeList) {
@@ -135,7 +136,7 @@ public class DatasetPreprocess {
 
     public static void projectGraphPreprocess() throws IOException {
 
-        String datasetNameList[] = {"test", "tags-math-sx","DAWN","tags-ask-ubuntu","NDC-substances","threads-ask-ubuntu","threads-math-sx","coauth-MAG-History","coauth-MAG-Geology"};
+        String datasetNameList[] = {"test", "tags-math-sx", "DAWN", "tags-ask-ubuntu", "NDC-substances", "threads-ask-ubuntu", "threads-math-sx", "coauth-MAG-History", "coauth-MAG-Geology"};
 
         String dataset = datasetNameList[8];
 
@@ -143,7 +144,7 @@ public class DatasetPreprocess {
         read file
          */
         long startTime1 = System.nanoTime();
-        String path_read = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset+"-proj-graph\\" + dataset + "-proj-graph.txt";
+        String path_read = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset + "-proj-graph\\" + dataset + "-proj-graph.txt";
         ArrayList<ArrayList<Integer>> edgeList = new ArrayList<>();
         final BufferedReader br = new BufferedReader(new FileReader(path_read));
         while (true) {
@@ -151,7 +152,7 @@ public class DatasetPreprocess {
             if (line == null) {
                 break;
             }
-            String token[]=line.split(" ");
+            String token[] = line.split(" ");
             Integer v = Integer.parseInt(token[0]);
             Integer u = Integer.parseInt(token[1]);
             ArrayList<Integer> edge = new ArrayList<>();
@@ -166,7 +167,7 @@ public class DatasetPreprocess {
         write file
          */
         long startTime2 = System.nanoTime();
-        String path_write = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset+"-proj-graph\\" + dataset + ".txt";
+        String path_write = "C:\\Users\\luoqi\\Desktop\\projectGraph\\" + dataset + "-proj-graph\\" + dataset + ".txt";
         BufferedWriter bw = new BufferedWriter(new FileWriter(path_write));
         for (ArrayList<Integer> edge : edgeList) {
             String line = edge.toString().replace("[", "").replace("]", "").replace(",", "");
@@ -180,11 +181,11 @@ public class DatasetPreprocess {
 
     public static void statisticHypergraph() throws IOException {
 
-        String datasetNameList[] = {"test", "tags-math","DAWN","tags-ask-ubuntu","NDC-substances","threads-ask-ubuntu","threads-math","coauth-History","coauth-Geology"};
+        String datasetNameList[] = {"test", "tags-math", "DAWN", "tags-ask-ubuntu", "NDC-substances", "threads-ask-ubuntu", "threads-math", "coauth-History", "coauth-Geology"};
 
 //        String datasetAll = datasetNameList[5];
 
-        for(String dataset:datasetNameList) {
+        for (String dataset : datasetNameList) {
         /*
         read file
          */
@@ -230,11 +231,39 @@ public class DatasetPreprocess {
     }
 
 
+    public static void storeNodeToEdgesFile() throws IOException {
+        String datasetNameList[] = {"test", "tags-math", "DAWN", "tags-ask-ubuntu", "NDC-substances", "threads-ask-ubuntu", "threads-math", "coauth-History", "coauth-Geology"};
+
+
+        String dataset = datasetNameList[8];
+        long startTime1 = System.nanoTime();
+        String path_read =  dataset + ".txt";
+
+        Hypergraph hypergraph = FileIOUtils.loadGraph(path_read, " ", true);
+
+
+//        LOGGER.info("before:"+hypergraph.getNodeToEdgesMap().toString());
+
+        FileIOUtils.writeNodeToEdgesMap(hypergraph.getNodeToEdgesMap(),dataset);
+
+//        HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap=FileIOUtils.loadNodeToEdgesMap(dataset);
+//        LOGGER.info("after:"+nodeToEdgesMap.toString());
+
+//        System.out.println(nodeToEdgesMap.get(1).toString());
+
+        long endTime1 = System.nanoTime();
+        LOGGER.info("WRITE DONE!: " + (double) (endTime1 - startTime1) / 1.0E9D);
+
+    }
+
+
     public static void main(String[] args) throws IOException {
 //        hypergraphPreprocess();
 
 //        projectGraphPreprocess();
 
-        statisticHypergraph();
+//        statisticHypergraph();
+
+        storeNodeToEdgesFile();
     }
 }

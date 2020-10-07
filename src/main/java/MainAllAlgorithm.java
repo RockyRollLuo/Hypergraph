@@ -5,6 +5,7 @@ import javafx.beans.binding.IntegerBinding;
 import model.Hypergraph;
 import model.Result;
 import org.apache.log4j.Logger;
+import util.DatasetPreprocess;
 import util.FileIOUtils;
 import util.SetOpt;
 import util.SetOpt.Option;
@@ -35,6 +36,8 @@ public class MainAllAlgorithm {
     @Option(abbr = 'e', usage = "corenumber of dynamic edge")
     public static int coreE = 5;
 
+    @Option(abbr = 'c', usage = "whether to constructe nodeToEdgesMap, false:no, true:yes")
+    public static boolean constructStructure = false;
 
     public static void main(String[] args) throws IOException {
         /*
@@ -49,10 +52,16 @@ public class MainAllAlgorithm {
         graph information
          */
         String datasetName = args[0];
-        Hypergraph hypergraph = FileIOUtils.loadGraph(datasetName, ToolUtils.getDelim(delimType));
+        Hypergraph hypergraph = FileIOUtils.loadGraph(datasetName, ToolUtils.getDelim(delimType),constructStructure);
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = new HashMap<>();
+        if (constructStructure) {
+            nodeToEdgesMap = hypergraph.getNodeToEdgesMap();
+        } else {
+            nodeToEdgesMap = FileIOUtils.loadNodeToEdgesMap(datasetName);
+            hypergraph.setNodeToEdgesMap(nodeToEdgesMap);
+        }
         ArrayList<Integer> nodeList = hypergraph.getNodeList();
         ArrayList<ArrayList<Integer>> edgeList = hypergraph.getEdgeList();
-        HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = hypergraph.getNodeToEdgesMap();
         System.out.println("dataset:" + datasetName);
         System.out.println("node size:" + nodeList.size());
         System.out.println("edge size:" + edgeList.size());

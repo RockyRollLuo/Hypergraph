@@ -3,7 +3,6 @@ package algorithm;
 import model.Hypergraph;
 import model.Result;
 import org.apache.log4j.Logger;
-import util.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +37,9 @@ public class Incremental {
         ArrayList<ArrayList<Integer>> edgeList = hypergraph.getEdgeList();
         HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = hypergraph.getNodeToEdgesMap();
 
-        //temp data
+        /*
+        temp data
+         */
         HashMap<Integer, Integer> tempCoreVMap = new HashMap<>(coreVMap);
         HashMap<ArrayList<Integer>, Integer> tempCoreEMap = new HashMap<>(coreEMap);
 
@@ -145,6 +146,7 @@ public class Incremental {
             }
         }
 
+        //iterate update
         while (!evictStack.isEmpty()) {
             Integer v = evictStack.pop();
 
@@ -181,8 +183,8 @@ public class Incremental {
             }
         }
 
-        this.coreVMap = tempCoreVMap;
-        this.coreEMap = tempCoreEMap;
+        setCoreVMap(tempCoreVMap);
+        setCoreEMap(tempCoreEMap);
 
         long endTime = System.nanoTime();
         double takenTime = (endTime - startTime) / 1.0E9D;

@@ -19,9 +19,9 @@ public class FileIOUtils {
      * @param datasetName dataset name
      * @param delim       seperate sybolm
      * @return a graph
-     * @throws IOException
+     * @throws IOException io
      */
-    public static Hypergraph loadGraph(String datasetName, String delim) throws IOException {
+    public static Hypergraph loadGraph(String datasetName, String delim, boolean constructStructure) throws IOException {
         long startTime = System.nanoTime();
         //Operate System
         String pathSeparator = "\\";
@@ -68,7 +68,7 @@ public class FileIOUtils {
         long endTime = System.nanoTime();
         LOGGER.info("TakenTime:" + (double) (endTime - startTime) / 1.0E9D);
 
-        return new Hypergraph(nodeList, edgeList);
+        return new Hypergraph(nodeList, edgeList,constructStructure);
     }
 
     /**
@@ -157,4 +157,97 @@ public class FileIOUtils {
         LOGGER.info((double) (endTime - startTime) / 1.0E9D);
     }
 
+    /**
+     *  write the nodeToEdgesMap to file
+     * @param nodeToEdgesMap data structure
+     * @param datasetName dataset name
+     * @throws IOException io
+     */
+    public static void writeNodeToEdgesMap(HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap, String datasetName) throws IOException {
+        long startTime = System.nanoTime();
+        LOGGER.info("Start writing nodeToEdgesMap... ");
+
+        //Operate System
+        String pathSeparator = "\\";
+        String os = System.getProperty("os.name");
+        if (!os.toLowerCase().startsWith("win")) {
+            pathSeparator = "/";
+        }
+        String fileName = "datasets/nodeToEdgesMap/" + datasetName;
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+
+        bw.write("# dataset: " + datasetName );
+        bw.newLine();
+
+        //print
+        for (Integer node : nodeToEdgesMap.keySet()) {
+            ArrayList<ArrayList<Integer>> edges = nodeToEdgesMap.get(node);
+
+
+            bw.write(node.toString() + "\t" + edges.size());
+            bw.newLine();
+
+            for (ArrayList<Integer> e : edges) {
+                bw.write(e.toString().replace("[","").replace("]","").replace(" ",""));
+                bw.newLine();
+            }
+        }
+        bw.close();
+
+        long endTime = System.nanoTime();
+        LOGGER.info((double) (endTime - startTime) / 1.0E9D);
+    }
+
+    /**
+     *  read the file of nodeToEdgesMap
+     * @param datasetName dataset name
+     * @return nodeToEdgesMap
+     * @throws IOException io
+     */
+    public static HashMap<Integer, ArrayList<ArrayList<Integer>>> loadNodeToEdgesMap(String datasetName) throws IOException {
+        long startTime = System.nanoTime();
+
+        String path = "datasets/nodeToEdgesMap/" + datasetName;
+
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap = new HashMap<>();
+
+        //read
+        final BufferedReader br = new BufferedReader(new FileReader(path));
+        while (true) {
+            final String line = br.readLine();
+            if (line == null) {
+                break;
+            }
+            if (line.startsWith("#") || line.startsWith("%") || line.startsWith("//")) {
+                continue;
+            }
+
+            //node and edge size
+            String[] nodeAndSize = line.split("\t");
+            Integer node = Integer.parseInt(nodeAndSize[0]);
+            int edgeSize = Integer.parseInt(nodeAndSize[1]);
+
+
+            //read edges
+            ArrayList<ArrayList<Integer>> edges = new ArrayList<>();
+            for (int i = 0; i < edgeSize; i++) {
+                String edgeLine = br.readLine();
+
+                ArrayList<Integer> e = new ArrayList<>();
+                String[] tokens=edgeLine.split(",");
+                for (String token : tokens) {
+                    int nodeInEdge = Integer.parseInt(token);
+                    e.add(nodeInEdge);
+                }
+                edges.add(e);
+            }
+            nodeToEdgesMap.put(node, edges);
+        }
+
+        long endTime = System.nanoTime();
+        LOGGER.info((double) (endTime - startTime) / 1.0E9D);
+
+        return nodeToEdgesMap;
+    }
 }

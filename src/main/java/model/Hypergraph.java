@@ -15,10 +15,13 @@ public class Hypergraph {
     private HashMap<Integer, ArrayList<ArrayList<Integer>>> nodeToEdgesMap;
 
     //constructor
-    public Hypergraph(ArrayList<Integer> nodeList, ArrayList<ArrayList<Integer>> edgeList) {
+    public Hypergraph(ArrayList<Integer> nodeList, ArrayList<ArrayList<Integer>> edgeList, boolean constructStructure) {
         this.nodeList = nodeList;
         this.edgeList = edgeList;
-        constructNodeToEdgesMap();
+
+        if (constructStructure) {
+            constructNodeToEdgesMap();
+        }
     }
 
     /**

@@ -71,7 +71,6 @@ public class Decremental {
         1.compute node support correlate with e_0
          */
         int core_root = tempCoreEMap.get(e0);
-        HashMap<Integer, Integer> supportMap = new HashMap<>();
         HashMap<Integer, Boolean> visitedNode = new HashMap<>();
         for (Integer v : nodeList) {
             visitedNode.put(v, false);
@@ -84,6 +83,8 @@ public class Decremental {
                 visitedNode.put(v, true); //NEED!,the initialized value not only one
             }
         }
+
+        HashMap<Integer, Integer> supportMap = new HashMap<>();
         while (!stack.isEmpty()) {
             Integer v = stack.pop();
 
@@ -144,8 +145,8 @@ public class Decremental {
         }
         tempCoreEMap.remove(e0);
 
-        this.coreVMap = tempCoreVMap;
-        this.coreEMap = tempCoreEMap;
+        setCoreVMap(tempCoreVMap);
+        setCoreEMap(tempCoreEMap);
 
         long endTime = System.nanoTime();
         double takenTime = (endTime - startTime) / 1.0E9D;
